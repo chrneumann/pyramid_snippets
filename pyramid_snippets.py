@@ -112,10 +112,13 @@ def get_snippet(context, request, name=None):
 
 def snippet_factory(func, title, schema=None):
     class SnippetComingOutOfTheFactory(object):
-        pass
+        def __init__(self, context, request):
+            self.context = context
+            self.request = request
+            pass
         
     
-    SnippetComingOutOfTheFactory.__call__ = func
+    SnippetComingOutOfTheFactory.__call__ = lambda self: func(self.context, self.request)
     SnippetComingOutOfTheFactory.title = title
     SnippetComingOutOfTheFactory.schema = schema
     

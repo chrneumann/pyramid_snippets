@@ -22,6 +22,10 @@ def test_non_existing(request):
                    " name \'foo\' registered.</div>")
 
 
+def foo_context():
+    pass
+
+
 def test_rendering(config, request):
     def foo(context, request):
         return Response(u"Foo")
@@ -36,7 +40,7 @@ def test_arguments(config, request):
             request.POST.get('body'),
             request.POST.get('ham')))
     config.add_snippet(name='foo', snippet=foo, title="Magick Garrery")
-    config.add_snippet(name='foo', snippet=DummySnippet)
+#    config.add_snippet(name='foo', snippet=DummySnippet)
 
     out = render_snippets(None, request, '[foo ham=egg]Blubber[/foo]')
     assert out == u'Blubber - egg'
@@ -71,8 +75,6 @@ class TestSnippetsRegistration(object):
         assert value.keys() == ['foo']
         snippet = value['foo']
         assert snippet.title == u'Face'
-        assert snippet.__call__.im_func == dummy_snippet
-
 
 class TestSnippetsRegexp(TestCase):
     def setUp(self):
